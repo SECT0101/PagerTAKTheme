@@ -1,0 +1,24 @@
+name: release
+
+# Push a tag like v1.0.0 to publish a release with the installable theme zip.
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zip theme
+        run: |
+          mkdir dist
+          (cd themes && zip -qr "$GITHUB_WORKSPACE/dist/tak5-theme-${GITHUB_REF_NAME}.zip" tak5)
+          (cd art && zip -qr "$GITHUB_WORKSPACE/dist/tak5-art-${GITHUB_REF_NAME}.zip" tak5)
+          (cd ringtones && zip -qr "$GITHUB_WORKSPACE/dist/tak5-ringtones-${GITHUB_REF_NAME}.zip" tak5)
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip

@@ -1,0 +1,4 @@
+tools/*/fonts/
+tools/tak5/tacpine.png
+tools/tak5/wordmark.png
+__pycache__/
